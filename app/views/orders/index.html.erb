@@ -21,10 +21,16 @@
         <td><%= order.email %></td>
         <td><%= order.pay_type %></td>
         <td><%= link_to 'Show', order %></td>
+    
+        <% if @usr.admin? %>
         <td><%= link_to 'Edit', edit_order_path(order) %></td>
         <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
+        <% end %>
+ 
+        <td><%= link_to 'AddNote',new_order_note_path(order) %></td>
+        <td><%= link_to 'EditNote',edit_order_note_path(order,order.note) %></td>
+        </tr>
+      <% end %>
   </tbody>
 </table>
 
@@ -32,5 +38,5 @@
 
 <%= link_to 'New Order', new_order_path %>
 
-<p><%= will_paginate @orders %></p>
+<p><%= paginate @orders ,:window => 2 %></p>
 

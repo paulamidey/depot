@@ -1,7 +1,6 @@
-
 <div class="depot_form" >
 
-  <%= form_for @user do |f| %>
+  <%= form_for @user ,  :html => { :multipart => true }  do |f| %>
 
   <% if @user.errors.any? %>
 
@@ -25,7 +24,7 @@
     </div>
 
     <div>
-      <%= f.label :password, 'Password' %>:
+      <%= f.label :password  %>:
       <%= f.password_field :password, :size => 40 %>
     </div>
 
@@ -33,11 +32,46 @@
       <%= f.label :password_confirmation, 'Confirm' %>:
       <%= f.password_field :password_confirmation, :size => 40 %>
     </div>
+   
+     <%= f.fields_for :location do |a| %>
+   
+     <div>
+       <%= a.label :address %>:
+       <%= a.text_field :address, :size => 40 %>
+     </div>
 
+    <div>
+      <%= a.label :city %>:
+      <%= a.text_field :city, :size => 10 %>
+    </div>
+
+    <div>
+      <%= a.label :state %>:
+      <%= a.text_field :state, :size => 10 %>
+    </div>
+    
+    <div>
+      <%= a.label :country %>:
+      <%= a.country_select :country, {priority: %w(US CA IN), prompt: 'Please select a country'} %>
+    </div>
+    
+    <div>
+      <%= a.label :zipcode %>:
+      <%= a.text_field :zipcode, :size => 5 %>
+    </div>
+    
+    <% end %>
+    
+    <div>
+      <%= f.label :avatar, 'Photo' %>:
+      <%= f.file_field :avatar %>
+    </div>
+    
     <div>
       <%= f.submit %>
     </div>
-
+    
   </fieldset>
+  
   <% end %>
 </div>

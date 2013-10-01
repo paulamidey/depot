@@ -1,13 +1,18 @@
 source 'https://rubygems.org'
 
+
+gem 'execjs'
+gem 'therubyracer'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.0.rc2'
+gem 'rails', '4.0.0'
 
 # Use mysql as the database for Active Record
 gem 'mysql2'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0.rc2'
+gem 'sass-rails', '~> 4.0.0'
+
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -20,17 +25,13 @@ gem 'uglifier', '>= 1.3.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
 
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
-
-group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
+ group :doc do
+  #bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
-end
+ end
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -43,4 +44,21 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-gem 'will_paginate', '>= 3.0.pre'
+
+ group :development do
+  gem "letter_opener"
+  gem 'quiet_assets'
+end
+
+gem 'rails_admin', github: 'sferik/rails_admin'
+
+gem "paperclip", "3.4.2"
+gem 'thin'
+gem 'kaminari'
+
+gem "carmen-rails", github: 'jim/carmen-rails'
+
+gem 'state_select', '0.1.0'
+
+
+gem 'ckeditor_rails',github: 'tsechingho/ckeditor-rails'

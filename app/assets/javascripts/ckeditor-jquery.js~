@@ -1,0 +1,18 @@
+$(document).ready(function() {
+   if ($('textarea').length > 0) {      
+     var data = $('textarea');
+     $.each(data, function(i) {
+       CKEDITOR.replace(data[i].id);
+     });    
+   } 
+});
+
+
+$(document).ready(function() {
+   if ($('texfield').length > 0) {      
+     var data = $('textfield');
+     $.each(data, function(i) {
+       CKEDITOR.replace(data[i].id);
+     });    
+   } 
+});

@@ -1,14 +1,15 @@
 class OrdersController < ApplicationController
-   before_filter :set_cart
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_filter :set_cart
+  before_filter :set_user
+  before_action :set_order, only: [:show, :edit, :update, :destroy ]
 
   skip_before_filter :authorize, :only => [:new, :create]
 
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.paginate :page=>params[:page], :order=>'created_at desc' ,
-    :per_page => 10
+    @usr = current_user
+    @orders = Order.order(:name).page(params[:page]).per(2)
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @orders }
@@ -19,11 +20,16 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
+    @usr = current_user
+    @count = @order.count_line_items
+    @line_items = @order.line_items
+    @total_price = @order.total_price
   end
 
   # GET /orders/new
   def new
     @cart = current_cart
+    @usr = current_user
     if @cart.line_items.empty?
       redirect_to store_url, :notice => "Your cart is empty"
       return
@@ -44,7 +50,8 @@ class OrdersController < ApplicationController
   # POST /orders.json
   def create
     @cart = current_cart
-    @order = Order.new(order_params)
+    @usr = current_user
+    @order = @usr.orders.new(order_params)
     @order.add_line_items_from_cart(current_cart)
     respond_to do |format|
       if @order.save
@@ -55,6 +62,7 @@ class OrdersController < ApplicationController
 
         format.html { redirect_to(store_url, :notice => 'Thank you for your order.' ) }
         format.xml { render :xml => @order, :status => :created, :location => @order }
+
       else
         format.html { render :action => "new" }
         format.xml { render :xml => @order.errors,:status => :unprocessable_entity }
@@ -87,18 +95,36 @@ class OrdersController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_order
-      @order = Order.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type)
-    end
-
-    def set_cart
-      @cart = current_cart
+  def my_orders
+    @user = current_user
+    order = @user.orders
+    if params[:order] == "max"
+      @orders= order.select{ |list| list.maximum_orders? }
+    else if   params[:order] == "min"
+           @orders = order.select { |list| list.minimum_orders? }
+         else
+           @orders=order
+         end
     end
   end
+
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_order
+    @order = Order.find(params[:id])
+  end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+  def order_params
+    params.require(:order).permit(:name, :address, :email, :pay_type)
+  end
+
+  def set_cart
+    @cart = current_cart
+  end
+
+  def set_user
+    @usr = current_user
+  end
+
+end

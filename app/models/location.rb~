@@ -1,0 +1,6 @@
+class Location < ActiveRecord::Base
+
+validates :address, :state, :country , :presence => true
+validates :zipcode, length: { is: 5 }
+belongs_to :user
+end

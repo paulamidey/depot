@@ -5,7 +5,6 @@ class AddQuantityToLineItem < ActiveRecord::Migration
   end
 
   def self.down
-
     remove_column :line_items, :quantity
   end
 end

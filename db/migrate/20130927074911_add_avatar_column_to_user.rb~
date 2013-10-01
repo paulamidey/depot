@@ -1,0 +1,4 @@
+class AddAvatarColumnToUser < ActiveRecord::Migration
+  def change
+  end
+end

@@ -4,8 +4,12 @@
     <% @products.each do |product| %>
     <tr class=" <%= cycle('list_line_odd' , 'list_line_even' ) %>" >
       <td>
-        <%= image_tag(product.image_url, :class => 'list_image' ) %>
+        <dl>
+          <dt><%= image_tag(product.image_url, :class => 'list_image',:id => 'popup' ) %></dt>
+          <dd id="pop"><a>Preview</a></dt>
+        </dl>
       </td>
+     
       <td class="list_description" >
         <dl>
           <dt><%= product.title %></dt>
@@ -14,11 +18,13 @@
         </dl>
       </td>
       <td class="list_actions" >
+        
         <%= link_to 'Show' , product %><br/>
+       
+        <% if  @usr.admin? %>
         <%= link_to 'Edit' , edit_product_path(product) %><br/>
-        <%= link_to 'Destroy' , product,
-            :confirm => 'Are you sure?' ,
-        :method => :delete %>
+        <%= link_to 'Destroy' , product,     :confirm => 'Are you sure?' , :method => :delete %>
+        <% end %>
 
       </td>
     </tr>
@@ -26,4 +32,8 @@
   </table>
 </div>
 <br />
+
+<% if @usr.admin? %>
 <%= link_to 'New product' , new_product_path %>
+
+<% end %>

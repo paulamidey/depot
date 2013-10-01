@@ -15,6 +15,17 @@ class ApplicationController < ActionController::Base
     cart
   end
 
+
+  def current_user
+   @c_user = User.find(session[:user_id])
+  rescue ActiveRecord::RecordNotFound
+  end
+
+  def current_order
+    Order.find(session[:order_id])
+    rescue ActiveRecord::RecordNotFound
+  end
+
   protected
 
   def authorize
@@ -22,6 +33,7 @@ class ApplicationController < ActionController::Base
       redirect_to login_url, :notice => "Please log in"
     end
   end
+
 end
 
 

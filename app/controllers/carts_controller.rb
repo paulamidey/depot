@@ -6,6 +6,7 @@ class CartsController < ApplicationController
   # GET /carts.json
   def index
     @carts = Cart.all
+    @user = current_user
   end
 
 
@@ -38,6 +39,7 @@ class CartsController < ApplicationController
   # POST /carts
   # POST /carts.json
   def create
+
     @cart = Cart.new(cart_params)
 
     respond_to do |format|
@@ -72,8 +74,7 @@ class CartsController < ApplicationController
     @cart.destroy
     session[:cart_id] = nil
     respond_to do |format|
-      format.html { redirect_to(store_url,
-                                :notice => 'Your cart is currently empty' ) }
+      format.html { redirect_to(store_url,:notice => 'Your cart is currently empty' ) }
       format.xml { head :ok }
     end
 

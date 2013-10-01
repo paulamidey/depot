@@ -1,0 +1,38 @@
+<h1>Listing orders</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Email</th>
+      <th>Pay type</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= order.name %></td>
+        <td><%= order.address %></td>
+        <td><%= order.email %></td>
+        <td><%= order.pay_type %></td>
+        <td><%= link_to 'Min', my_orders_orders_path(order: "min") %></td>
+        <td><%= link_to 'Max', my_orders_orders_path(order: "max") %></td>
+
+        <% if @user.admin? %>
+        <td><%= link_to 'Edit', edit_order_path(order) %></td>
+        <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>     
+      </tr>
+      <% end %>
+  </tbody>
+</table>
+
+<br/>
+
+<%= link_to 'New Order', new_order_path %>
+

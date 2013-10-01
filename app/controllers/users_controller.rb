@@ -1,36 +1,44 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_filter :set_cart
+
   # GET /users
   # GET /users.json
   def index
     @users = User.order(:name)
     @cart =  current_cart
+    @usr = current_user
     respond_to do |format|
       format.html # index.html.erb
       format.xml { render :xml => @users }
     end
-
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    @usr = current_user
   end
 
   # GET /users/new
   def new
     @user = User.new
+    @usr = current_user
+    @user.build_location
   end
 
   # GET /users/1/edit
   def edit
+    @usr = current_user
+    @user.build_location
   end
 
   # POST /users
   # POST /users.json
+
   def create
     @user = User.new(user_params)
+    @usr =current_user
 
     respond_to do |format|
       if @user.save
@@ -62,7 +70,6 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-
     begin
       @user.destroy
       flash[:notice] = "User #{@user.name} deleted"
@@ -84,11 +91,10 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :password, :password_confirmation)
+      params.require(:user).permit(:name, :password, :password_confirmation, :avatar ,:location_attributes => [:address , :city,:state ,:country])
     end
 
     def  set_cart
-
       @cart = current_cart
     end
 end

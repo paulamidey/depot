@@ -1,34 +1,39 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
+  before_action :set_cart
   # GET /products
   # GET /products.json
   def index
     @products  = Product.all
-
+    @usr = current_user
     @cart= current_cart
   end
 
   # GET /products/1
   # GET /products/1.json
   def show
-   @cart = current_cart
+    @cart = current_cart
+    @usr= current_user
   end
 
   # GET /products/new
   def new
     @product = Product.new
+    @usr = current_user
+    @cart = current_cart
   end
 
   # GET /products/1/edit
   def edit
+    @usr = current_user
   end
 
   # POST /products
   # POST /products.json
   def create
     @product = Product.new(product_params)
-
+    @usr = current_user
     respond_to do |format|
       if @product.save
         format.html { redirect_to @product, notice: 'Product was successfully created.' }
@@ -82,4 +87,9 @@ class ProductsController < ApplicationController
     def product_params
       params.require(:product).permit(:title, :description, :image_url, :price)
     end
+
+    def set_cart
+      @cart = current_cart
+    end
+
 end
